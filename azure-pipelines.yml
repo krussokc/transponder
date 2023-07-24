@@ -11,24 +11,51 @@ pool:
 
 variables:
   solution: '**/*.sln'
+  project: '**/src/Api/DeviceManagement.Api.csproj'
+  tests: '**/*.Tests.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+stages:
+- stage: DotNetBuild
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: windows-latest
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core 6 sdk'
+      inputs:
+        version: '6.0.x'
+    - task: NuGetToolInstaller@1
+      displayName: 'NuGet Install'
+    - task: NuGetCommand@2
+      inputs:
+        command: 'restore'
+        restoreSolution: '$(solution)'
+      displayName: 'dotnet Restore'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: build
+        projects: '$(project)'
+        arguments: '-c $(buildConfiguration)'
+      displayName: 'Build API Project'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: test
+        publishTestResults: true
+        projects: '$(tests)'
+      displayName: 'Run Tests'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: '-o $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: false
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: '$(buildConfiguration)'
+        publishLocation: 'Container'
