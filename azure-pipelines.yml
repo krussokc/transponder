@@ -11,7 +11,9 @@ pool:
 
 variables:
   solution: '**/*.sln'
-  project: '**/src/Api/DeviceManagement.Api.csproj'
+  projectPath: '**/src/Api'
+  project: '$(projectPath)/DeviceManagement.Api.csproj'
+
   tests: '**/*.Tests.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
@@ -59,13 +61,9 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: '$(buildConfiguration)'
         publishLocation: 'Container'
-        
     - task: Docker@2
-      displayName: Build and push an image to container registry
       inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+        containerRegistry: 'meshtmscontainerregistry'
+        repository: 'devicemanagement'
+        command: 'buildAndPush'
+        Dockerfile: '$(projectPath)/Dockerfile'
