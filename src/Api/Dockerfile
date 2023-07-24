@@ -6,11 +6,9 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["src/Api/DeviceManagment.Api.csproj", "src/Api/"]
-RUN dotnet restore "src/Api/DeviceManagment.Api.csproj"
+COPY ["DeviceManagment.Api.csproj", "./"]
+RUN dotnet restore "./DeviceManagment.Api.csproj"
 COPY . .
-WORKDIR "/src/src/Api"
 RUN dotnet build "DeviceManagment.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
