@@ -61,7 +61,7 @@ namespace DeviceManagement.Services.Tests.Extensions
         }
 
         [Test]
-        public void UseDeviceManagmentServices_Should_Add_Required_Middleware()
+        public void UseDeviceManagementServices_Should_Add_Required_Middleware()
         {
         }
     }

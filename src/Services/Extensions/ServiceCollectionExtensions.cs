@@ -17,7 +17,7 @@ namespace DeviceManagement.Services.Extensions
             return services;
         }
 
-        public static IApplicationBuilder UseDeviceManagmentServices(this IApplicationBuilder app)
+        public static IApplicationBuilder UseDeviceManagementServices(this IApplicationBuilder app)
         {
             app.UseMiddleware<DeviceManagementMiddleware>();
 

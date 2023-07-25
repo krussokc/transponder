@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "DeviceManagment.Api": {
+    "DeviceManagement.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

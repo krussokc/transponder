@@ -38,7 +38,7 @@ namespace DeviceManagement.Api
             app.UseAuthorization();
             app.MapControllers();
 
-            app.UseDeviceManagmentServices();
+            app.UseDeviceManagementServices();
 
             app.Run();
         }
