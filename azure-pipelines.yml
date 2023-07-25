@@ -61,6 +61,14 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: '$(buildConfiguration)'
         publishLocation: 'Container'
+- stage: DockerBuild
+  displayName: Build docker image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
     - task: Docker@2
       inputs:
         containerRegistry: 'meshtmscontainerregistry'
