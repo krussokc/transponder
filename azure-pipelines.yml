@@ -66,4 +66,4 @@ stages:
         containerRegistry: 'meshtmscontainerregistry'
         repository: 'devicemanagement'
         command: 'buildAndPush'
-        Dockerfile: '$(projectPath)/Dockerfile'
+        Dockerfile: '**/Dockerfile'
