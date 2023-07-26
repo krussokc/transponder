@@ -36,8 +36,7 @@ stages:
     - task: CmdLine@2
       displayName: List Tools
       inputs:
-        script: |
-        for %f in ( "$(Build.ArtifactStagingDirectory)\*" ) do @echo %f
+        script: dir
 #     - task: NuGetToolInstaller@1
 #       displayName: 'Install NuGet Tool'
 #     - task: Cache@2
