@@ -7,6 +7,14 @@
     <UserSecretsId>82eac588-6f09-4775-b987-0dacef4b1145</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	<DockerfileFile>..\..\Dockerfile</DockerfileFile>
+	<StartupObject>DeviceManagement.Api.Program</StartupObject>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
