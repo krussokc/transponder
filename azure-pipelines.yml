@@ -34,7 +34,7 @@ stages:
     #   inputs:
     #     version: '6.0.x'
       - script: cd ..
-      - script: dir
+      - script: dotnet --info
 #     - task: NuGetToolInstaller@1
 #       displayName: 'Install NuGet Tool'
 #     - task: Cache@2
