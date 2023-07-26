@@ -33,59 +33,64 @@ stages:
       displayName: 'Use .NET Core 6 sdk'
       inputs:
         version: '6.0.x'
-    - task: NuGetToolInstaller@1
-      displayName: 'Install NuGet Tool'
-    - task: Cache@2
-      displayName: NuGet Cache
+    - task: CmdLine@2
+      displayName: List Tools
       inputs:
-        key: 'nuget | "$(Agent.OS)" | **/packages.lock.json,!**/bin/**,!**/obj/**'
-        restoreKeys: |
-           nuget | "$(Agent.OS)"
-           nuget
-        path: '$(NUGET_PACKAGES)'
-        cacheHitVar: 'CACHE_RESTORED'
-    - task: NuGetCommand@2
-      displayName: 'NuGet Restore'
-      condition: ne(variables.CACHE_RESTORED, true)
-      inputs:
-        command: 'restore'
-        restoreSolution: '$(solution)'
-    - task: DotNetCoreCLI@2
-      displayName: 'Build Project'
-      inputs:
-        command: build
-        projects: '$(project)'
-        arguments: '-c $(buildConfiguration)'
-    - task: DotNetCoreCLI@2
-      displayName: 'Run Tests'
-      inputs:
-        command: test
-        publishTestResults: true
-        projects: '$(tests)'
-    - task: DotNetCoreCLI@2
-      displayName: Publish Project
-      inputs:
-        command: 'publish'
-        publishWebProjects: true
-        arguments: '-o $(Build.ArtifactStagingDirectory)'
-        zipAfterPublish: false
-    - task: PublishBuildArtifacts@1
-      displayName: Publish Artifacts
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: '$(buildConfiguration)'
-        publishLocation: 'Container'
-- stage: DockerBuild
-  displayName: Build Docker Image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'meshtmscontainerregistry'
-        repository: 'devicemanagement'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
+        script: |
+        for %f in ( "$(Build.ArtifactStagingDirectory)\*" ) do @echo %f
+#     - task: NuGetToolInstaller@1
+#       displayName: 'Install NuGet Tool'
+#     - task: Cache@2
+#       displayName: NuGet Cache
+#       inputs:
+#         key: 'nuget | "$(Agent.OS)" | **/packages.lock.json,!**/bin/**,!**/obj/**'
+#         restoreKeys: |
+#            nuget | "$(Agent.OS)"
+#            nuget
+#         path: '$(NUGET_PACKAGES)'
+#         cacheHitVar: 'CACHE_RESTORED'
+#     - task: NuGetCommand@2
+#       displayName: 'NuGet Restore'
+#       condition: ne(variables.CACHE_RESTORED, true)
+#       inputs:
+#         command: 'restore'
+#         restoreSolution: '$(solution)'
+#     - task: DotNetCoreCLI@2
+#       displayName: 'Build Project'
+#       inputs:
+#         command: build
+#         projects: '$(project)'
+#         arguments: '-c $(buildConfiguration)'
+#     - task: DotNetCoreCLI@2
+#       displayName: 'Run Tests'
+#       inputs:
+#         command: test
+#         publishTestResults: true
+#         projects: '$(tests)'
+#     - task: DotNetCoreCLI@2
+#       displayName: Publish Project
+#       inputs:
+#         command: 'publish'
+#         publishWebProjects: true
+#         arguments: '-o $(Build.ArtifactStagingDirectory)'
+#         zipAfterPublish: false
+#     - task: PublishBuildArtifacts@1
+#       displayName: Publish Artifacts
+#       inputs:
+#         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#         ArtifactName: '$(buildConfiguration)'
+#         publishLocation: 'Container'
+# - stage: DockerBuild
+#   displayName: Build Docker Image
+#   jobs:
+#   - job: Build
+#     displayName: Build
+#     pool:
+#       vmImage: ubuntu-latest
+#     steps:
+#     - task: Docker@2
+#       inputs:
+#         containerRegistry: 'meshtmscontainerregistry'
+#         repository: 'devicemanagement'
+#         command: 'buildAndPush'
+#         Dockerfile: '**/Dockerfile'
