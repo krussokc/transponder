@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\DeviceManagement.Domain.csproj" />
-    <ProjectReference Include="..\Infrastructure\DeviceManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Domain\src\DeviceManagement.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\src\DeviceManagement.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

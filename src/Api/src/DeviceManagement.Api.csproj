@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Services\DeviceManagement.Services.csproj" />
+    <ProjectReference Include="..\..\Services\src\DeviceManagement.Services.csproj" />
   </ItemGroup>
 
 </Project>
